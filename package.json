@@ -1,0 +1,15 @@
+{
+  "name": "lgpd-consent",
+  "version": "1.0.0",
+  "description": "Banner de cookies para a LGPD que bloqueia scripts de verdade até o consentimento, com Google Consent Mode v2. Uma tag script, zero dependências.",
+  "type": "module",
+  "main": "./src/lgpd-consent.js",
+  "files": ["src"],
+  "scripts": {
+    "test": "node --test",
+    "demo": "node scripts/serve.js 5173"
+  },
+  "engines": { "node": ">=20" },
+  "keywords": ["lgpd", "gdpr", "cookie-banner", "consent", "consent-mode", "google-tag-manager", "privacy"],
+  "license": "MIT"
+}

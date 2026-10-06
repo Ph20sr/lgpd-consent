@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>lgpd-consent · demo</title>
+  <!-- 1) O banner vem primeiro no <head>: define o Consent Mode como "negado" -->
+  <script src="../src/lgpd-consent.js" data-version="1" data-policy-url="#politica" data-color="#2563eb"></script>
+  <style>
+    :root { color-scheme: light dark; --bg: #f8fafc; --fg: #0f172a; --muted: #64748b; --card: #fff; --border: #e2e8f0; --on: #16a34a; --off: #dc2626; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #020617; --fg: #f1f5f9; --muted: #94a3b8; --card: #0f172a; --border: #1e293b; --on: #4ade80; --off: #f87171; } }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 system-ui, sans-serif; padding: 48px 16px 160px; }
+    main { max-width: 680px; margin: 0 auto; }
+    h1 { font-size: clamp(28px, 6vw, 40px); line-height: 1.15; margin: 0 0 8px; }
+    p { color: var(--muted); }
+    .grid { display: grid; gap: 12px; margin: 24px 0; }
+    .row { display: flex; justify-content: space-between; gap: 12px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+    .on { color: var(--on); font-weight: 700; } .off { color: var(--off); font-weight: 700; }
+    button { font: inherit; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: inherit; cursor: pointer; }
+    pre { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; font-size: 12px; overflow: auto; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>lgpd-consent</h1>
+    <p>Os "scripts" de estatísticas e marketing desta página só rodam depois do consentimento. Escolha uma opção no banner e veja o status mudar.</p>
+
+    <div class="grid">
+      <div class="row"><span>Script de estatísticas</span><span id="st-analytics" class="off">bloqueado</span></div>
+      <div class="row"><span>Script de marketing</span><span id="st-marketing" class="off">bloqueado</span></div>
+    </div>
+
+    <button type="button" onclick="LGPDConsent.open()">Preferências de cookies</button>
+    <button type="button" onclick="LGPDConsent.reset()">Limpar consentimento</button>
+
+    <h2>dataLayer (Consent Mode)</h2>
+    <pre id="dl"></pre>
+  </main>
+
+  <!-- 2) Scripts bloqueados até o consentimento da categoria -->
+  <script type="text/plain" data-consent="analytics">
+    document.getElementById('st-analytics').textContent = 'executou';
+    document.getElementById('st-analytics').className = 'on';
+  </script>
+  <script type="text/plain" data-consent="marketing">
+    document.getElementById('st-marketing').textContent = 'executou';
+    document.getElementById('st-marketing').className = 'on';
+  </script>
+
+  <script>
+    const show = () => {
+      document.getElementById('dl').textContent = JSON.stringify(
+        (window.dataLayer || []).map((a) => Array.from(a)), null, 2);
+    };
+    addEventListener('lgpd:consent', show);
+    show();
+  </script>
+</body>
+</html>
